@@ -1,0 +1,31 @@
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        ans = []
+        maxQ = deque()
+        
+        for i in range(len(nums)):
+            # Remove elements that are out of the current window
+            while maxQ and maxQ[0] < i - k + 1:
+                maxQ.popleft()
+
+            # Remove elements smaller than the current number
+            while maxQ and nums[maxQ[-1]] < nums[i]:
+                maxQ.pop()
+
+            maxQ.append(i)
+
+            # Add the maximum element for the current window
+            if i >= k - 1:
+                ans.append(nums[maxQ[0]])
+
+        return ans
+
+Algorithm:
+ans: This is a list that will store the maximum values for each sliding window.
+maxQ: This is a deque that will store indices of elements in the current window.
+The code iterates through each element in the nums array using the variable i.
+The while loop removes indices from the front of the deque (maxQ) that are out of the current window (indices less than i - k + 1). This ensures that the deque only contains indices within the current sliding window.
+Another while loop removes indices from the back of the deque (maxQ) if the corresponding elements in the nums array are smaller than the current number (nums[i]). This is done to keep the deque in decreasing order of element values.
+The current index i is appended to the deque.
+If the current index is greater than or equal to k - 1 (indicating that the window has reached its full size), the maximum element for the current window is nums[maxQ[0]], and it is appended to the ans list.
+The function returns the ans list containing the maximum values for each sliding window.
